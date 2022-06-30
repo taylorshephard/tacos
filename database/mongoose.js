@@ -19,7 +19,9 @@ const recipeRatingSchema = {
 
 const Rating = mongoose.model("recipe-ratings", recipeRatingSchema);
 
+//save rating to database
 const save = function (rating, callback) {
+  // find the recipe rating with the same name
   Rating.findOne({ recipe_name: rating.recipe_name }, function (error, data) {
     if (error) {
       console.log(error);
@@ -31,6 +33,7 @@ const save = function (rating, callback) {
         rating: rating.rating,
       });
 
+      //save the new rating to the database
       newRating.save(function (error, ratingInfo) {
         if (error) {
           console.log(error);
@@ -43,6 +46,7 @@ const save = function (rating, callback) {
   });
 };
 
+// get recipe ratings from database
 const find = function (callback) {
   Rating.find({}, function (err, rating) {
     if (err) {

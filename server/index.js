@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// get recipe ratings
+// get recipe ratings from database
 app.get("/recipe-ratings", (req, res) => {
   var rating;
   db.find(function (data) {
@@ -18,7 +18,7 @@ app.get("/recipe-ratings", (req, res) => {
   });
 });
 
-// post rating
+// post rating to database
 app.post("/recipe-ratings", (req, res) => {
   var rating = req.body;
   db.save(rating, function (data) {
