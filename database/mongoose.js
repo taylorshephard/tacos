@@ -1,11 +1,21 @@
-var mongoose = require("mongoose");
+require("dotenv").config();
+const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/recipe-ratings", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
 });
 
-var db = mongoose.connection;
+const connect = function () {
+  return mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+  });
+};
 
+const close = function () {
+  return mongoose.connection.close();
+};
+
+const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   // we're connected!
@@ -50,7 +60,17 @@ const save = function (rating, callback) {
 const find = function (callback) {
   Rating.find({}, function (err, rating) {
     if (err) {
-      console.log(errr);
+      console.log(err);
+    } else {
+      callback(rating);
+    }
+  });
+};
+
+const deleteRating = function (recipe_name, callback) {
+  Rating.deleteOne({ recipe_name: recipe_name }, function (err, rating) {
+    if (err) {
+      console.log(err);
     } else {
       callback(rating);
     }
@@ -58,6 +78,10 @@ const find = function (callback) {
 };
 
 module.exports = {
+  Rating,
+  connect,
+  close,
   save,
   find,
+  deleteRating,
 };
