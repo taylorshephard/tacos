@@ -11,7 +11,7 @@ describe("server/index.js", function () {
 
   after(() => {
     try {
-      db.deleteRating("recipe1", function (rating) {
+      db.remove("recipe1", function (rating) {
         console.log("deleted");
       });
       db.connection.close();
@@ -34,20 +34,30 @@ describe("server/index.js", function () {
       await db.save(rating, callback);
     });
   });
+  describe("update", function () {
+    it("should update a rating in the database", async function () {
+      const callback = function (data) {
+        expect(data).to.be.an("object");
+        expect(data.recipe_name).to.equal("recipe1");
+        expect(data.rating).to.equal(10);
+      };
+      await db.update("recipe1", 10, callback);
+    });
+  });
   describe("find", function () {
     it("should find all ratings in the database", async function () {
       const callback = function (data) {
         expect(data).to.be.an("array");
         expect(data.length).to.equal(1);
         expect(data[0].recipe_name).to.equal("recipe1");
-        expect(data[0].rating).to.equal(5);
+        expect(data[0].rating).to.equal(10);
       };
       await db.find(callback);
     });
     it("should send error if rating already exists", async function () {
       const rating = {
         recipe_name: "recipe1",
-        rating: 5,
+        rating: 10,
       };
       const callback = function (data) {
         expect(data).to.be.an("string");
