@@ -67,6 +67,20 @@ const find = function (callback) {
   });
 };
 
+const update = function (recipe_name, rating, callback) {
+  Rating.findOneAndUpdate(
+    { recipe_name: recipe_name },
+    { $set: { rating: rating } },
+    function (err, rating) {
+      if (err) {
+        console.log(err);
+      } else {
+        callback(rating);
+      }
+    }
+  );
+};
+
 const remove = function (recipe_name, callback) {
   Rating.deleteOne({ recipe_name: recipe_name }, function (err, rating) {
     if (err) {
@@ -84,4 +98,5 @@ module.exports = {
   save,
   find,
   remove,
+  update,
 };
