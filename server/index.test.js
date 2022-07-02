@@ -5,16 +5,19 @@ const expect = require("chai").expect;
 const Rating = db.Rating;
 
 describe("server/index.js", function () {
-  before((done) => {
-    db.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-    })
-      .then(() => {
-        done();
-      })
-      .catch((err) => {
-        done(err);
+  before(() => {
+    db.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+  });
+
+  after(() => {
+    try {
+      db.deleteRating("recipe1", function (rating) {
+        console.log("deleted");
       });
+      db.connection.close();
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   describe("save", function () {
@@ -40,16 +43,17 @@ describe("server/index.js", function () {
         expect(data[0].rating).to.equal(5);
       };
       await db.find(callback);
-
-      after(async () => {
-        try {
-          await db.deleteRating("recipe1", function (rating) {
-            console.log("deleted");
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      });
+    });
+    it("should send error if rating already exists", async function () {
+      const rating = {
+        recipe_name: "recipe1",
+        rating: 5,
+      };
+      const callback = function (data) {
+        expect(data).to.be.an("string");
+        expect(data).to.equal("Rating already exists");
+      };
+      await db.save(rating, callback);
     });
   });
 });

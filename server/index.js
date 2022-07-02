@@ -26,6 +26,14 @@ app.post("/recipe-ratings", (req, res) => {
   });
 });
 
+app.delete("/recipe-ratings", (req, res) => {
+  var recipe_name = req.query.recipe_name;
+  console.log(recipe_name);
+  db.remove(recipe_name, function (data) {
+    res.send(data);
+  });
+});
+
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);
 });

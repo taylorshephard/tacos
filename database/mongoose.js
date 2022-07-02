@@ -67,7 +67,7 @@ const find = function (callback) {
   });
 };
 
-const deleteRating = function (recipe_name, callback) {
+const remove = function (recipe_name, callback) {
   Rating.deleteOne({ recipe_name: recipe_name }, function (err, rating) {
     if (err) {
       console.log(err);
@@ -83,5 +83,5 @@ module.exports = {
   close,
   save,
   find,
-  deleteRating,
+  remove,
 };
