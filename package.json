@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
+    "start": "cd client && npm start && cd .. & nodemon server/index.js",
     "test": "mocha server/index.test.js"
   },
   "keywords": [],
