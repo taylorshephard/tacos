@@ -22,7 +22,6 @@ function searchGuac(searchTerm, callback) {
         response.data
       );
       callback(data);
-      console.log(response.data.length, data.length);
     })
     .catch((error) => {
       console.log(error);

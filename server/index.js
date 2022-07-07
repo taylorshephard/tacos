@@ -36,7 +36,6 @@ app.post("/ingredients", (req, res) => {
 app.put("/ingredients", (req, res) => {
   var recipe_name = req.query.recipe_name;
   var rating = req.body;
-  console.log(recipe_name);
   db.update(recipe_name, rating.rating, function (data) {
     res.send("ingredient updated");
   });
@@ -44,7 +43,6 @@ app.put("/ingredients", (req, res) => {
 
 app.delete("/ingredients", (req, res) => {
   var recipe_name = req.query.recipe_name;
-  console.log(recipe_name);
   db.remove(recipe_name, function (data) {
     res.send(data);
   });
