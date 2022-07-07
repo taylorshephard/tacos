@@ -5,8 +5,8 @@ function RecipeItem(props) {
       <div>
         <h4>Ingredients</h4>
         <ul>
-          {props.recipe.ingredients.map((ingredient) => (
-            <li key={ingredient}>
+          {props.recipe.ingredients.map((ingredient, i) => (
+            <li key={i}>
               {ingredient.name}: {ingredient.quantity}
             </li>
           ))}

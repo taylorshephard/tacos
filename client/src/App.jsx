@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">Tacos!</header>
+      <header className="App-header">Find Tacos!</header>
       <Search onSearch={setRecipes} />
       <RecipeList recipes={recipes} />
     </div>
