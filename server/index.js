@@ -16,27 +16,27 @@ app.get("/", (req, res) => {
   res.sendStatus(201);
 });
 
-// get recipe ratings from database
+// get recipe ingredients from database
 app.get("/ingredients", (req, res) => {
-  var rating;
+  var ingredient;
   db.find(function (data) {
-    rating = data;
-    res.send(rating);
+    ingredient = data;
+    res.send(ingredient);
   });
 });
 
-// post rating to database
+// post ingredient to database
 app.post("/ingredients", (req, res) => {
-  var rating = req.body;
-  db.save(rating, function (data) {
+  var ingredient = req.body;
+  db.save(ingredient, function (data) {
     res.send(data);
   });
 });
 
 app.put("/ingredients", (req, res) => {
   var recipe_name = req.query.recipe_name;
-  var rating = req.body;
-  db.update(recipe_name, rating.rating, function (data) {
+  var ingredient = req.body;
+  db.update(recipe_name, ingredient.ingredient, function (data) {
     res.send("ingredient updated");
   });
 });
