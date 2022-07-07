@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 
-function Search() {
+function Search(props) {
   const [includeBeef, setIncludeBeef] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -15,7 +15,7 @@ function Search() {
   function handleFormSubmit(event) {
     event.preventDefault();
     const searchOptions = {
-      search: search,
+      name: search,
       includeIngredients: [],
       excludeIngredients: [],
     };
@@ -25,12 +25,14 @@ function Search() {
 
     axios
       .get("http://localhost:8080/taco-recipes", {
-        query: {
+        params: {
           ...searchOptions,
           includeIngredients: searchOptions.includeIngredients.join(","),
+          excludeIngredients: searchOptions.excludeIngredients.join(","),
         },
       })
       .then((res) => {
+        props.onSearch(res.data);
         console.log(res.data);
       });
   }

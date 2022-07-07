@@ -1,11 +1,16 @@
 import "./App.css";
+import { useState } from "react";
+import RecipeList from "./components/recipeList";
 import Search from "./components/search";
 
 function App() {
+  const [recipes, setRecipes] = useState([]);
+
   return (
     <div className="App">
       <header className="App-header">Tacos!</header>
-      <Search />
+      <Search onSearch={setRecipes} />
+      <RecipeList recipes={recipes} />
     </div>
   );
 }
