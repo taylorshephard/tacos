@@ -4,6 +4,12 @@ import { useState } from "react";
 
 function Search(props) {
   const [includeBeef, setIncludeBeef] = useState(false);
+  const [includePork, setIncludePork] = useState(false);
+  const [includeChicken, setIncludeChicken] = useState(false);
+  const [includeFish, setIncludeFish] = useState(false);
+  const [vegetarian, setVegetarian] = useState(false);
+  const [nonDairy, setNonDairy] = useState(false);
+
   const [search, setSearch] = useState("");
 
   function handleInputChange(searchInput) {
@@ -21,6 +27,31 @@ function Search(props) {
     };
     if (includeBeef === true) {
       searchOptions.includeIngredients.push("beef");
+    } else if (includePork === true) {
+      searchOptions.includeIngredients.push("pork");
+    } else if (includeChicken === true) {
+      searchOptions.includeIngredients.push("chicken");
+    } else if (includeFish === true) {
+      searchOptions.includeIngredients.push("fish");
+    } else if (vegetarian === true) {
+      searchOptions.excludeIngredients.push(
+        "fish",
+        "chicken",
+        "beef",
+        "pork",
+        "turkey",
+        "meat",
+        "lobster",
+        "steak",
+        "bacon"
+      );
+    } else if (nonDairy === true) {
+      searchOptions.excludeIngredients.push(
+        "milk",
+        "cheese",
+        "yogurt",
+        "sour cream"
+      );
     }
 
     axios
@@ -33,7 +64,6 @@ function Search(props) {
       })
       .then((res) => {
         props.onSearch(res.data);
-        console.log(res.data);
       });
   }
 
@@ -41,7 +71,7 @@ function Search(props) {
     <div className="search-bar form-inline">
       <form onSubmit={(e) => handleFormSubmit(e)}>
         <label>
-          Name:
+          Recipe Name:
           <input
             type="text"
             name="name"
@@ -53,18 +83,45 @@ function Search(props) {
         <br />
         Included Ingredients:
         <br />
-        <label>
-          Beef
-          <input
-            type="checkbox"
-            // checked={this.state.beef}
-            onChange={() => {
-              console.log(!includeBeef);
-              setIncludeBeef(!includeBeef);
-            }}
-            value="beef"
-          />
-        </label>
+        {["Beef", "Chicken", "Pork", "Fish"].map((ingredient, i) => (
+          <label key={i}>
+            {ingredient}
+            <input
+              type="checkbox"
+              name={ingredient}
+              checked={eval(`include${ingredient}`)}
+              onChange={() => {
+                eval(`setInclude${ingredient}`)(!eval(`include${ingredient}`));
+              }}
+            />
+            <br />
+          </label>
+        ))}
+        <br />
+        Exclude Ingredients:
+        <br />
+        {["vegetarian", "nonDairy"].map((exclusion, i) => {
+          return (
+            <label key={i}>
+              {exclusion}
+              <input
+                type="checkbox"
+                name={exclusion}
+                checked={eval(`${exclusion}`)}
+                onChange={(event) => {
+                  let exclusionFunc;
+                  if (exclusion === "vegetarian") {
+                    exclusionFunc = setVegetarian;
+                  } else if (exclusion === "nonDairy") {
+                    exclusionFunc = setNonDairy;
+                  }
+                  exclusionFunc(!eval(`${exclusion}`));
+                }}
+              />
+              <br />
+            </label>
+          );
+        })}
         <br />
         <input type="submit" value="Submit" />
       </form>

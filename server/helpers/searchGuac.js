@@ -17,11 +17,16 @@ function searchGuac(searchTerm, callback) {
 
   axios(options)
     .then((response) => {
-      const data = excludeIngredients(
-        searchTerm.excludeIngredients,
-        response.data
-      );
-      callback(data);
+      if (searchTerm.excludeIngredients.length) {
+        const data = excludeIngredients(
+          searchTerm.excludeIngredients,
+          response.data
+        );
+        console.log(response.data.length, data.length);
+        callback(data);
+      } else {
+        callback(response.data);
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -29,19 +34,28 @@ function searchGuac(searchTerm, callback) {
 }
 
 // API excludeIngredients not working, This is a function to make sure that the ingredients that are excluded are not included in the results
-function excludeIngredients(excludeIngredientsList, ingredients) {
-  return ingredients.filter((recipe) => {
-    for (let i = 0; i < recipe.ingredients.length; i++) {
-      const ingredientName = recipe.ingredients[i].name;
-      if (
-        excludeIngredientsList &&
-        excludeIngredientsList.split(",").includes(ingredientName)
-      ) {
-        return false;
-      }
+function excludeIngredients(excludeIngredientsList, recipes) {
+  // return array where recipe name doesn't include any of the ingredients in the excludeIngredientsList and recipe ingredients doesn't include any of the ingredients in the excludeIngredientsList
+  return recipes.filter((recipe) => {
+    if (excludeIngredientsList) {
+      return !excludeIngredientsList.split(",").some((ingredient) => {
+        const ingredients = recipe.ingredients
+          .map((ingredient) => {
+            return ingredient.name.toLowerCase();
+          })
+          .filter((food) => {
+            return food.includes(ingredient);
+          });
+
+        // console.log(ingredients, ingredients.includes(ingredient));
+
+        return (
+          recipe.name.toLowerCase().includes(ingredient.toLowerCase()) ||
+          ingredients.length
+        );
+      });
     }
-    return true;
+    return null;
   });
 }
-
 module.exports = { searchGuac };
