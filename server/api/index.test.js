@@ -1,5 +1,5 @@
 require("dotenv").config();
-const db = require("../database/mongoose");
+const db = require("../database/index.js");
 const expect = require("chai").expect;
 
 const Rating = db.Rating;
