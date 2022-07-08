@@ -8,12 +8,9 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [ratings, setRatings] = useState({});
 
-  useEffect(() => {
-    console.log(ratings);
-  });
-
   // use get to see if the user has already rated a recipe
   // if they have, set the rating to the value in the database
+  // if not set the rating to to the new rating
   function handleRatingClick(recipeName, rating) {
     axios
       .get(`http://localhost:8080/ratings/:`, {
@@ -27,6 +24,11 @@ function App() {
             ...ratings,
             [recipeName]: rating,
           }));
+          recipes.forEach((recipe) => {
+            if (recipe.name === recipeName) {
+              recipe.rating = rating;
+            }
+          });
           axios.put(`http://localhost:8080/ratings`, {
             params: {
               recipe_name: recipeName,
@@ -38,6 +40,11 @@ function App() {
             ...ratings,
             [recipeName]: rating,
           }));
+          recipes.forEach((recipe) => {
+            if (recipe.name === recipeName) {
+              recipe.rating = rating;
+            }
+          });
           axios.post(`http://localhost:8080/ratings`, {
             data: { recipe_name: recipeName, rating },
           });
