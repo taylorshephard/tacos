@@ -35,7 +35,10 @@ I used the queries `includeIngredients=chili` and `includeIngredients=fresh` to 
 
 The `vegetarian` choice gets the recipes that do not have the words `fish,chicken,beef,pork,turkey,meat,lobster,steak,bacon` in any of the ingredients
 The `nonDairy` choice gets the recipes that do not have the words `milk,cheese,yogurt,sour cream` in any of the ingredients
-I used the queries `excludeIngredients=fish,chicken,beef,pork,turkey,meat,lobster,steak,bacon` and `includeIngredients=milk,cheese,yogurt,sour cream` to get the recipes from the `guac-is-extra` API but it was sending back an internal server error. So I made an `excludeIngredients` function that excludes the recipes that have those ingredients. It is in the `server/helpers/searchGuac.js` file.
+
+I used the queries `excludeIngredients=fish,chicken,beef,pork,turkey,meat,lobster,steak,bacon` and `includeIngredients=milk,cheese,yogurt,sour cream` to get the recipes from the `guac-is-extra` API but it was sending back an internal server error.
+
+So I made an `excludeIngredients` function that excludes the recipes that have those ingredients. It is in the `server/helpers/searchGuac.js` file.
 
 4. I stored recipe ratings to the database. The user is able to rate a recipe between 1 to 5 stars
    Each document is just a recipe name and a rating. for example:
