@@ -3,10 +3,8 @@ import React from "react";
 import { useState } from "react";
 
 function Search(props) {
-  const [includeBeef, setIncludeBeef] = useState(false);
-  const [includePork, setIncludePork] = useState(false);
-  const [includeChicken, setIncludeChicken] = useState(false);
-  const [includeFish, setIncludeFish] = useState(false);
+  const [includeChili, setIncludeChili] = useState(false);
+  const [includeFresh, setIncludeFresh] = useState(false);
   const [vegetarian, setVegetarian] = useState(false);
   const [nonDairy, setNonDairy] = useState(false);
 
@@ -25,15 +23,13 @@ function Search(props) {
       includeIngredients: [],
       excludeIngredients: [],
     };
-    if (includeBeef === true) {
-      searchOptions.includeIngredients.push("beef");
-    } else if (includePork === true) {
-      searchOptions.includeIngredients.push("pork");
-    } else if (includeChicken === true) {
-      searchOptions.includeIngredients.push("chicken");
-    } else if (includeFish === true) {
-      searchOptions.includeIngredients.push("fish");
-    } else if (vegetarian === true) {
+    if (includeChili === true) {
+      searchOptions.includeIngredients.push("chili");
+    }
+    if (includeFresh === true) {
+      searchOptions.includeIngredients.push("fresh");
+    }
+    if (vegetarian === true) {
       searchOptions.excludeIngredients.push(
         "fish",
         "chicken",
@@ -54,6 +50,7 @@ function Search(props) {
       );
     }
 
+    console.log(searchOptions);
     axios
       .get("http://localhost:8080/taco-recipes", {
         params: {
@@ -81,25 +78,29 @@ function Search(props) {
           />
         </label>
         <br />
-        Included Ingredients:
         <br />
-        {["Beef", "Chicken", "Pork", "Fish"].map((ingredient, i) => (
+        <h4>Included Ingredients:</h4>
+        {["Chili", "Fresh"].map((ingredient, i) => (
           <label key={i}>
-            {ingredient}
+            {ingredient === "Chili"
+              ? `Make if Spicy, include ${ingredient}`
+              : `Make if Fresh, include ${ingredient} Ingredients`}
             <input
               type="checkbox"
               name={ingredient}
+              // use eval() to access the variable name
               checked={eval(`include${ingredient}`)}
               onChange={() => {
-                eval(`setInclude${ingredient}`)(!eval(`include${ingredient}`));
+                const includeFunc = `setInclude${ingredient}`;
+                // use eval() to access the variable name
+                eval(includeFunc)(!eval(`include${ingredient}`));
               }}
             />
             <br />
           </label>
         ))}
         <br />
-        Exclude Ingredients:
-        <br />
+        <h4>Exclude Ingredients:</h4>
         {["vegetarian", "nonDairy"].map((exclusion, i) => {
           return (
             <label key={i}>
@@ -107,6 +108,7 @@ function Search(props) {
               <input
                 type="checkbox"
                 name={exclusion}
+                // use eval() to access the variable name
                 checked={eval(`${exclusion}`)}
                 onChange={(event) => {
                   let exclusionFunc;
@@ -115,6 +117,7 @@ function Search(props) {
                   } else if (exclusion === "nonDairy") {
                     exclusionFunc = setNonDairy;
                   }
+                  // use eval() to access the variable name
                   exclusionFunc(!eval(`${exclusion}`));
                 }}
               />
