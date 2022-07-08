@@ -3,7 +3,7 @@ function RecipeItem(props) {
     <div>
       <h2>{props.recipe.name}</h2>
       <div>
-        <h4>Ingredients</h4>
+        <h3>Ingredients</h3>
         <ul>
           {props.recipe.ingredients.map((ingredient, i) => (
             <li key={i}>
@@ -11,7 +11,7 @@ function RecipeItem(props) {
             </li>
           ))}
         </ul>
-        <h4>Directions</h4>
+        <h3>Directions</h3>
         <p>{props.recipe.directions}</p>
       </div>
     </div>

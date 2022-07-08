@@ -1,11 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const db = require("./database/index.js");
-const findTacos = require("./helpers/searchGuac.js");
+const db = require("./index.js");
+const findTacos = require("../helpers/searchGuac.js");
 const app = express();
 const cors = require("cors");
-const { default: searchGuac } = require("./helpers/searchGuac.js");
 const port = 8080;
 
 app.use(cors());
@@ -50,6 +49,7 @@ app.delete("/ingredients", (req, res) => {
 
 // get taco recipes from guac-is-extra API
 app.get("/taco-recipes", (req, res) => {
+  console.log(req.query);
   findTacos.searchGuac(req.query, function (data) {
     res.send(data);
   });
