@@ -14,7 +14,6 @@ describe("server/index.js", function () {
       db.remove("recipe1", function (rating) {
         console.log("deleted");
       });
-      db.connection.close();
     } catch (err) {
       console.error(err);
     }
@@ -50,7 +49,7 @@ describe("server/index.js", function () {
         expect(data).to.be.an("array");
         expect(data.length).to.equal(1);
         expect(data[0].recipe_name).to.equal("recipe1");
-        expect(data[0].rating).to.equal(10);
+        expect(data[0].rating).to.equal(5);
       };
       await db.find(callback);
     });
@@ -61,7 +60,7 @@ describe("server/index.js", function () {
       };
       const callback = function (data) {
         expect(data).to.be.an("string");
-        expect(data).to.equal("Rating already exists");
+        expect(data).to.equal("rating already exists");
       };
       await db.save(rating, callback);
     });
