@@ -41,7 +41,8 @@ function Search(props) {
         "steak",
         "bacon"
       );
-    } else if (nonDairy === true) {
+    }
+    if (nonDairy === true) {
       searchOptions.excludeIngredients.push(
         "milk",
         "cheese",
@@ -50,7 +51,6 @@ function Search(props) {
       );
     }
 
-    console.log(searchOptions);
     axios
       .get("http://localhost:8080/taco-recipes", {
         params: {

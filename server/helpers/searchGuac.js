@@ -22,7 +22,6 @@ function searchGuac(searchTerm, callback) {
           searchTerm.excludeIngredients,
           response.data
         );
-        console.log(response.data.length, data.length);
         callback(data);
       } else {
         callback(response.data);
@@ -33,7 +32,7 @@ function searchGuac(searchTerm, callback) {
     });
 }
 
-// API excludeIngredients not working, This is a function to make sure that the ingredients that are excluded are not included in the results
+// guac-is-extra API excludeIngredients not working, This is a function to make sure that the ingredients that are excluded are not included in the results
 function excludeIngredients(excludeIngredientsList, recipes) {
   // return array where recipe name doesn't include any of the ingredients in the excludeIngredientsList and recipe ingredients doesn't include any of the ingredients in the excludeIngredientsList
   return recipes.filter((recipe) => {
@@ -46,8 +45,6 @@ function excludeIngredients(excludeIngredientsList, recipes) {
           .filter((food) => {
             return food.includes(ingredient);
           });
-
-        // console.log(ingredients, ingredients.includes(ingredient));
 
         return (
           recipe.name.toLowerCase().includes(ingredient.toLowerCase()) ||

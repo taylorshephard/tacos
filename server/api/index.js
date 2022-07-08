@@ -49,7 +49,6 @@ app.delete("/ingredients", (req, res) => {
 
 // get taco recipes from guac-is-extra API
 app.get("/taco-recipes", (req, res) => {
-  console.log(req.query);
   findTacos.searchGuac(req.query, function (data) {
     res.send(data);
   });
