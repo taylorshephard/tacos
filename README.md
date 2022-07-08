@@ -60,5 +60,6 @@ There is a test file in `server/api/`. To run the tests, run `npm run test` in t
 
 I really enjoyed working on this app. I did not get to finish a couple things including:
 
-Todo 1: if a recipe has a rating saved in the database already, show the rating when the page loads
-Todo 2: fix the tests, they do not pass every time.
+- Todo 1: if a recipe has a rating saved in the database already, show the rating when the page loads
+
+- Todo 2: fix the tests, they do not pass every time.
