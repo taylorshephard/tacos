@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const db = require("./index.js");
+const db = require("../database/index.js");
 const findTacos = require("../helpers/searchGuac.js");
 const app = express();
 const cors = require("cors");
@@ -15,32 +15,39 @@ app.get("/", (req, res) => {
   res.sendStatus(201);
 });
 
-// get recipe ingredients from database
-app.get("/ingredients", (req, res) => {
-  var ingredient;
+// get recipe ratings from database
+app.get("/ratings", (req, res) => {
   db.find(function (data) {
-    ingredient = data;
-    res.send(ingredient);
-  });
-});
-
-// post ingredient to database
-app.post("/ingredients", (req, res) => {
-  var ingredient = req.body;
-  db.save(ingredient, function (data) {
     res.send(data);
   });
 });
 
-app.put("/ingredients", (req, res) => {
-  var recipe_name = req.query.recipe_name;
-  var ingredient = req.body;
-  db.update(recipe_name, ingredient.ingredient, function (data) {
-    res.send("ingredient updated");
+// get rating by name from database
+app.get(`/ratings/:recipe_name`, (req, res) => {
+  db.findByName(req.query.recipe_name, function (data) {
+    res.send(data);
   });
 });
 
-app.delete("/ingredients", (req, res) => {
+// post rating to database
+app.post("/ratings", (req, res) => {
+  const rating = req.body.data;
+  db.save(rating, function (data) {
+    res.send(data);
+  });
+});
+
+app.put("/ratings", (req, res) => {
+  const {
+    params: { recipe_name },
+    data: { rating },
+  } = req.body;
+  db.update(recipe_name, rating, function (data) {
+    res.send(`updated ${recipe_name} rating to ${rating}`);
+  });
+});
+
+app.delete("/ratings", (req, res) => {
   var recipe_name = req.query.recipe_name;
   db.remove(recipe_name, function (data) {
     res.send(data);

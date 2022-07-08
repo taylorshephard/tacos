@@ -14,14 +14,13 @@ db.once("open", function () {
   console.log("connected to database");
 });
 
-// Schema for ingredients
-const ingredientsSchema = {
-  quantity: String,
-  name: String,
-  preparation: String,
+// Schema for ratings
+const ratingsSchema = {
+  recipe_name: String,
+  rating: Number,
 };
 
-const Ingredient = mongoose.model("ingredients", ingredientsSchema);
+const Ratings = mongoose.model("ratings", ratingsSchema);
 
 //Mongo Helper Functions
 module.exports = {
@@ -34,65 +33,79 @@ module.exports = {
   close: function () {
     return mongoose.connection.close();
   },
-  //save ingredient to database
-  save: function (ingredient, callback) {
-    // find the recipe ingredient with the same name
-    Ingredient.findOne({ name: ingredient.name }, function (error, data) {
-      if (error) {
-        console.log(error);
-      } else if (!error && data) {
-        callback("ingredient already exists");
-      } else {
-        const newIngredient = new Ingredient({
-          name: ingredient.name,
-          quantity: ingredient.quantity,
-          preparation: ingredient.preparation,
-        });
-
-        //save the new ingredient to the database
-        newIngredient.save(function (error, ingredientInfo) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log("ingredient: " + ingredientInfo.name + " saved!");
-            callback(ingredientInfo);
-          }
-        });
-      }
-    });
-  },
-
-  // get recipe ingredients from database
-  find: function (callback) {
-    Ingredient.find({}, function (err, ingredient) {
-      if (err) {
-        console.log(err);
-      } else {
-        callback(ingredient);
-      }
-    });
-  },
-
-  update: function (name, ingredient, callback) {
-    Ingredient.findOneAndUpdate(
-      { name: name },
-      { $set: { ingredient: ingredient } },
-      function (err, ingredient) {
-        if (err) {
-          console.log(err);
+  //save rating to database
+  save: function (rating, callback) {
+    // find the recipe rating with the same recipe_name
+    Ratings.findOne(
+      { recipe_name: rating.recipe_name },
+      function (error, data) {
+        if (error) {
+          console.log(error);
+        } else if (!error && data) {
+          callback("rating already exists");
         } else {
-          callback(ingredient);
+          const newRatings = new Ratings({
+            recipe_name: rating.recipe_name,
+            rating: rating.rating,
+          });
+
+          //save the new rating to the database
+          newRatings.save(function (error, ratingInfo) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("rating: " + ratingInfo.recipe_name + " saved!");
+              callback(ratingInfo);
+            }
+          });
         }
       }
     );
   },
 
-  remove: function (name, callback) {
-    Ingredient.deleteOne({ name: name }, function (err, ingredient) {
+  // get recipe ratings from database
+  find: function (callback) {
+    Ratings.find({}, function (err, rating) {
       if (err) {
         console.log(err);
       } else {
-        callback(ingredient);
+        callback(rating);
+      }
+    });
+  },
+
+  //find recipe by name
+  findByName: function (name, callback) {
+    Ratings.findOne({ recipe_name: name }, function (err, rating) {
+      if (err) {
+        console.log(err);
+      } else {
+        callback(rating);
+      }
+    });
+  },
+
+  //update rating in database
+  update: function (recipe_name, rating, callback) {
+    Ratings.findOneAndUpdate(
+      { recipe_name: recipe_name },
+      { $set: { rating: rating } },
+      function (err, rating) {
+        if (err) {
+          console.log(err);
+        } else {
+          callback(rating);
+        }
+      }
+    );
+  },
+
+  remove: function (recipe_name, callback) {
+    Ratings.deleteOne({ recipe_name: recipe_name }, function (err, rating) {
+      if (err) {
+        console.log(err);
+      } else {
+        callback(rating);
       }
     });
   },
